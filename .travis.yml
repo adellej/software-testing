@@ -1,0 +1,41 @@
+sudo: required
+dist: xenial
+language: python 
+
+notifications:
+  email:
+    recipients:
+      # Please don't email me.  Put your email here.
+      - adelle.goodwin@monash.edu
+    on_success: change
+    on_failure: always
+
+matrix:
+
+  include:
+    - os: linux
+      python: 
+      - "3.6" 
+      - "3.7" # Should be a string version, e.g., "2.7".  DON'T ACTUALLY TEST 2.7 though!
+
+    - os: osx 
+      python: 
+      - "3.6" 
+      - "3.7" # Should be a string version, e.g., "2.7".  DON'T ACTUALLY TEST 2.7 though!
+
+before_install:
+  # Before installing any packages, check that pip is up to date.
+  - python -m pip install --upgrade pip
+
+install:
+  # Remember how we said it was a good idea to keep everything in a requirements file?
+  - python -m pip install -r requirements.txt
+
+script:
+  # If you were testing on your own machine, what command do you execute to run your code? Hint: Starts with `py`...
+  - pytest
+
+# If all the tests passed, update `codecov`. Ensures your coverage is ALWAYS relevant.
+# Comment out these lines once Travis is working and you have Codecov linked to GitHub.
+after_success:
+  - coveralls 
